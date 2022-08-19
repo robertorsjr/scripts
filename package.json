@@ -1,5 +1,17 @@
 {
+  "name": "scripts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/robertorsjr/scripts.git",
+  "author": "Roberto <beto.rodriguesds@gmail.com>",
+  "license": "MIT",
+
+  "scripts": {
+    "start": "node src/teamWorkLogTime/index.js"
+  },
+
   "dependencies": {
+    "dotenv": "^16.0.1",
     "puppeteer": "^16.2.0",
     "readline-sync": "^1.4.10"
   }

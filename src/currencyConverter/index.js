@@ -4,7 +4,7 @@ const readlineSync = require("readline-sync");
 console.log('BOOM!');
 
 async function handleWebScript(){
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch({ headless: false }) // true for don't show page
     const page = await browser.newPage()
     const coinBase = readlineSync.question('Coin base: ') || 'dolar'
     const coinFinal = readlineSync.question('Coin final: ') || 'real'
