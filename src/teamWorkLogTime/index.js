@@ -6,9 +6,7 @@ const puppeteer = require("puppeteer");
 
 const meetingSelector = '[href="#/tasks/23962473"]'
 const outsourcingSelector = '[href="#/tasks/23973459"]'
-const buttonLogTime = '[data-identifier="task-details-log-time-button"]'
-
-const startTimeInputSelect = '[class="w-input-with-icons__input w-time-input__input form-control time-input is-timeEntry"]'
+const buttonLogTime = '[class="btn btn-secondary"]'
 
 async function handleLogin (page) {
     const emailInputSelector = '#loginemail'
@@ -26,15 +24,18 @@ async function handleLogin (page) {
 
 
 async function handleNavigateToLogTime (page, log) {
-    // select datamob project
+    // // select datamob project
+    await page.waitForSelector('[class="text"]') // wait
     await page.waitForSelector('[href="#/projects/556344"]') // wait
     await page.click('[href="#/projects/556344"]') // project
 
     // go to list
+    await page.waitForSelector('[class="tasks/list-tab"]')
     await page.waitForSelector('[href="/#/projects/556344/tasks/list"]')
     await page.click('[href="/#/projects/556344/tasks/list"]')
 
     const selectorToClick = log?.isMeeting ? meetingSelector : outsourcingSelector
+
     await page.waitForSelector(selectorToClick)
     await page.click(selectorToClick)
 
@@ -44,9 +45,13 @@ async function handleNavigateToLogTime (page, log) {
 
 
 async function handleFillForm (page, log) {
+    const textAreaSelector = '[class="form-control textarea-description"]'
+    const buttonSubmitLogSelector = '[class="action btn btn-primary ml--auto mr--none w-loader w-loader--expand w-loader--expand-right"]'
 
-    await page.waitForSelector(startTimeInputSelect)
-    await page.click(startTimeInputSelect)
+    await page.waitForSelector('[class="w-date-input__input form-control w-input-with-icons__input"]')
+    await page.click('[class="w-date-input__input form-control w-input-with-icons__input"]')
+
+    await page.keyboard.press('Tab')
 
     await page.keyboard.type(log.startMeridiem)
     await page.keyboard.type(log.startHour)
@@ -62,18 +67,17 @@ async function handleFillForm (page, log) {
     await page.keyboard.type(log.finalMinutes)
 
 
-    const textAreaSelector = '[class="form-control textarea-description"]'
     await page.waitForSelector(textAreaSelector)
+    await page.click(textAreaSelector)
     await page.type(textAreaSelector, log.textArea)
 
-    const buttonSubmitLogSelector = '[class="action btn btn-primary ml--auto mr--none w-loader w-loader--expand w-loader--expand-right"]'
     await page.waitForSelector(buttonSubmitLogSelector)
     await page.click(buttonSubmitLogSelector)
 }
 
 
 async function handleLogTimeScript(log) {
-    const browser = await puppeteer.launch({ headless: false }) // true for don't show process
+    const browser = await puppeteer.launch({ headless: false, slowMo: 20 }) // true for don't show process
     const page = await browser.newPage()
     await page.goto(process.env.URL_TO_GO)
 
