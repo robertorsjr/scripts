@@ -3,6 +3,8 @@ import { logs } from './userInfo.js'
 import puppeteer from "puppeteer";
 import {handleToday} from "../utils/formatDate.js";
 
+const {TEAM_WORK_EMAIL, TEAM_WORK_PASSWORD, URL_TO_GO} = process.env
+
 // save meetings and outsourcing
 
 const meetingSelector = '[href="#/tasks/23962473"]'
@@ -21,7 +23,6 @@ async function handleLogin (page) {
     const emailInputSelector = '#loginemail'
     const passwordInputSelector = '#loginpassword'
     const submitButtonSelector = '[type="submit"]'
-    const {TEAM_WORK_EMAIL, TEAM_WORK_PASSWORD} = process.env
 
     await handleSelectorPageLoad(page, emailInputSelector, TEAM_WORK_EMAIL)
     await handleSelectorPageLoad(page, passwordInputSelector, TEAM_WORK_PASSWORD)
@@ -83,7 +84,7 @@ async function handleFillForm (page, log) {
 ( async () => {
     const browser = await puppeteer.launch({ headless: false, slowMo: 20, defaultViewport: null }) // true for don't show process
     const page = await browser.newPage()
-    await page.goto(process.env.URL_TO_GO)
+    await page.goto(URL_TO_GO)
 
     for (let i = 0; i < logs.length; i++){
         const log = logs[i]
