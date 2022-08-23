@@ -1,12 +1,21 @@
 require('dotenv').config()
 const puppeteer = require("puppeteer");
 
-
 // save meetings and outsourcing
 
 const meetingSelector = '[href="#/tasks/23962473"]'
 const outsourcingSelector = '[href="#/tasks/23973459"]'
 const buttonLogTime = '[class="btn btn-secondary"]'
+
+const handlePrefix = (value) =>  (value).toString().padStart(2, "0")
+
+
+const date = new Date()
+const day = date.getDate()
+const month = date.getMonth()
+const year = date.getFullYear()
+const formattedDate = `${handlePrefix(day)}/${handlePrefix(month+1)}/${year}`
+
 
 async function handleLogin (page) {
     const emailInputSelector = '#loginemail'
@@ -47,9 +56,14 @@ async function handleNavigateToLogTime (page, log) {
 async function handleFillForm (page, log) {
     const textAreaSelector = '[class="form-control textarea-description"]'
     const buttonSubmitLogSelector = '[class="action btn btn-primary ml--auto mr--none w-loader w-loader--expand w-loader--expand-right"]'
+    const dateInputSelector = '[class="w-date-input__input form-control w-input-with-icons__input"]'
 
-    await page.waitForSelector('[class="w-date-input__input form-control w-input-with-icons__input"]')
-    await page.click('[class="w-date-input__input form-control w-input-with-icons__input"]')
+    await page.waitForSelector(dateInputSelector)
+    await page.click(dateInputSelector)
+    await page.keyboard.down('ControlRight');
+    await page.keyboard.press('KeyA');
+    await page.keyboard.up('ControlRight');
+    await page.type(dateInputSelector, formattedDate)
 
     await page.keyboard.press('Tab')
 
@@ -121,7 +135,7 @@ async function scriptRun () {
         finalMeridiem: 'p',
         finalHour: '6',
         finalMinutes: '00',
-        textArea: 'Resolvendo bugs nas tasks: 1611 e 1578'
+        textArea: 'Fazendo curso Android Enterprise'
     }
 
     await handleLogTimeScript(meeting)
