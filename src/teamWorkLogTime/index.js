@@ -82,7 +82,7 @@ async function handleFillForm (page, log) {
 }
 
 ( async () => {
-    const browser = await puppeteer.launch({ headless: false, slowMo: 20, defaultViewport: null }) // true for don't show process
+    const browser = await puppeteer.launch({ headless: false, slowMo: 20, defaultViewport: null }) // headless: true for don't show process
     const page = await browser.newPage()
     await page.goto(URL_TO_GO)
 
