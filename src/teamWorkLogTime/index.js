@@ -1,22 +1,13 @@
 import 'dotenv/config'
 import { morningOutsourcing, afterNoonOutsourcing, meeting } from './userInfo.js'
 import puppeteer from "puppeteer";
+import {handleToday} from "../utils/formatDate.js";
 
 // save meetings and outsourcing
 
 const meetingSelector = '[href="#/tasks/23962473"]'
 const outsourcingSelector = '[href="#/tasks/23973459"]'
 const buttonLogTime = '[class="btn btn-secondary"]'
-
-const handlePrefix = (value) =>  (value).toString().padStart(2, "0")
-
-function handleToday () {
-    const date = new Date()
-    const day = date.getDate()
-    const month = date.getMonth()
-    const year = date.getFullYear()
-    return `${handlePrefix(day)}/${handlePrefix(month+1)}/${year}`
-}
 
 async function handleSelectorPageLoad (page, selector, type) {
     await page.waitForSelector(selector)
