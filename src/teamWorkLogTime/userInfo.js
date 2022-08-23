@@ -1,4 +1,4 @@
-export const meeting = {
+const meeting = {
     isMeeting: true,
     startMeridiem: 'a',
     startHour: '10',
@@ -8,7 +8,7 @@ export const meeting = {
     finalMinutes: '00',
     textArea: 'daily datamob/3035tech'
 }
-export const morningOutsourcing = {
+const morningOutsourcing = {
     startMeridiem: 'a',
     startHour: '9',
     startMinutes: '00',
@@ -17,7 +17,7 @@ export const morningOutsourcing = {
     finalMinutes: '15',
     textArea: 'code review'
 }
-export const afterNoonOutsourcing = {
+const afterNoonOutsourcing = {
     startMeridiem: 'p',
     startHour: '1',
     startMinutes: '00',
@@ -26,3 +26,5 @@ export const afterNoonOutsourcing = {
     finalMinutes: '00',
     textArea: 'Fazendo curso Android Enterprise'
 }
+
+export const logs = [meeting, morningOutsourcing, afterNoonOutsourcing]

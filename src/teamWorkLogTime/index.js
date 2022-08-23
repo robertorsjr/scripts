@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { morningOutsourcing, afterNoonOutsourcing, meeting } from './userInfo.js'
+import { logs } from './userInfo.js'
 import puppeteer from "puppeteer";
 import {handleToday} from "../utils/formatDate.js";
 
@@ -29,7 +29,6 @@ async function handleLogin (page) {
     await page.click(submitButtonSelector)
 }
 
-
 async function handleNavigateToLogTime (page, log) {
     const selectorToClick = log?.isMeeting ? meetingSelector : outsourcingSelector
     const listSelector = '[href="/#/projects/556344/tasks/list"]'
@@ -45,7 +44,6 @@ async function handleNavigateToLogTime (page, log) {
 
     await handleSelectorPageLoad(page, buttonLogTime)
 }
-
 
 async function handleFillForm (page, log) {
     const textAreaSelector = '[class="form-control textarea-description"]'
@@ -82,29 +80,20 @@ async function handleFillForm (page, log) {
     await handleSelectorPageLoad(page, buttonSubmitLogSelector)
 }
 
-
-async function handleLogTimeScript(log) {
-    const browser = await puppeteer.launch({ headless: false, slowMo: 20 }) // true for don't show process
+( async () => {
+    const browser = await puppeteer.launch({ headless: false, slowMo: 20, defaultViewport: null }) // true for don't show process
     const page = await browser.newPage()
     await page.goto(process.env.URL_TO_GO)
 
-    await handleLogin(page)
-
-    await handleNavigateToLogTime(page, log)
-
-    await handleFillForm(page, log)
-
-    await page.screenshot({ path: 'exemple.png'})
-
-    console.log(log, 'done')
-
+    for (let i = 0; i < logs.length; i++){
+        const log = logs[i]
+        await handleLogin(page)
+        await handleNavigateToLogTime(page, log)
+        await handleFillForm(page, log)
+        await page.screenshot({ path: 'exemple.png'})
+        console.log(log, 'done')
+    }
     await page.browser().close()
-}
-
-( async () => {
-    await handleLogTimeScript(meeting)
-    await handleLogTimeScript(morningOutsourcing)
-    await handleLogTimeScript(afterNoonOutsourcing)
 })();
 
 
